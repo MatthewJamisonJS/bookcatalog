@@ -1,27 +1,44 @@
-<div id="<%= dom_id book %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= book.Title %>
-  </p>
+<%= form_with(model: book, local: true) do |form| %>
+  <% if book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:</h2>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Author:</strong>
-    <%= book.Author %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Isbn:</strong>
-    <%= book.ISBN %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Published date:</strong>
-    <%= book.Published_Date %>
-  </p>
-
-  <% if action_name != "show" %>
-    <%= link_to "Show this book", book, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to 'Edit this book', edit_book_path(book), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
+      <ul>
+        <% book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-</div>
+
+  <div class="field form-group">
+    <% form.label :Title %>
+    <%= form.text_field :Title, class:"form-control", placeholder:"Title" %>
+  </div>
+
+  <div class="field form-group">
+    
+    <%= form.text_field :Author, class:"form-control", placeholder:"Author" %>
+  </div>
+
+  <div class="field form-group">
+    
+    <%= form.text_field :ISBN, class:"form-control", placeholder:"ISBN" %>
+  </div>
+
+  <div class="field form-group">
+    
+    <%= form.text_field :Published_Date, class:"form-control", placeholder:"Published_Date" %>
+  </div>
+
+  <div class="field form-group">
+    
+    <%= form.number_field :user_id, id: :book_user_id, class:"form-control", value: current_user.id, type: :hidden %>
+  </div>
+  
+<br/>
+  <div class="actions">
+    <%= form.submit class:'btn btn-secondary' %>
+  </div>
+<% end %>
+
