@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   # GET /books or /books.json
   def index
-    @books = Book.order(sort_column + ' ' + sort_direction)
+    @books = Book.all.order(sort_column + ' ' + sort_direction)
   end
 
   # GET /books/1 or /books/1.json
