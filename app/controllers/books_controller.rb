@@ -1,9 +1,10 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
+  helper_method :sort_column, :sort_direction
 
   # GET /books or /books.json
   def index
-    @books = Book.all
+    @books = Book.order(sort_column + ' ' + sort_direction)
   end
 
   # GET /books/1 or /books/1.json
@@ -55,6 +56,15 @@ class BooksController < ApplicationController
       format.html { redirect_to books_url, notice: "Book was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+  # SORT /books1 or /books/1.json
+  private
+  def sort_column
+    Book.column_defaults.include?(params[:sort]) ? params[:sort] : "Published_Date"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
 
   private
